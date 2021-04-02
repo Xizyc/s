@@ -1,0 +1,139 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Threading;
+
+namespace проект
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bool fInf;
+            string path = textBox3.Text;
+            FileInfo fi = new FileInfo(path);
+            if (fi.Exists)
+            {
+                fInf = true;
+            }
+            else { fInf = false; }
+            using (StreamWriter file = new StreamWriter(path, fInf, System.Text.Encoding.Default))
+            {
+                file.WriteLine(textBox1.Text);
+                if (fInf == false) { label5.Text = "Текст успешно записан в новый файл"; }
+                else { label5.Text = "Текст записан в существующий файл"; }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string path = textBox3.Text;
+            try
+            {
+                using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
+                {
+                    int i = 0;
+                    textBox2.Text = sr.ReadToEnd();
+                    while (i < 100)
+                    {
+                        progressBar1.Value = i++;
+                        Thread.Sleep(50);
+                    }
+                    //stStatus.Text="Файл успешно считан";
+                    label5.Text = "Файл успешно считан";
+                }
+            }
+            catch (Exception er)
+            {
+                label5.Text = er.Message;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string path = textBox3.Text;
+            using (StreamWriter file = new StreamWriter(path, false, System.Text.Encoding.Default))
+            {
+                label5.Text = "Файл успешно обнулен";
+                textBox2.Clear();
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string path = textBox3.Text;
+            FileInfo fi = new FileInfo(path);
+            fi.Delete();
+            label5.Text = "Файл успешно удален";
+            textBox2.Clear();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string str;
+            string path = textBox3.Text;
+            using (StreamReader file = new StreamReader(path, System.Text.Encoding.Default))
+            {
+                str = file.ReadToEnd();
+                str = str.Replace(textBox4.Text, textBox5.Text);
+            }
+            using (StreamWriter file = new StreamWriter(path, false, System.Text.Encoding.Default))
+            {
+                file.WriteLine(str);
+                label5.Text = "Текст успешно заменен";
+            }
+        }
+    }
+}
